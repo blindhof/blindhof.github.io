@@ -74,6 +74,7 @@
       background-color: rgba(0, 0, 0, 0.9);
     }
     .modal-content {
+      position: relative;
       margin: 5% auto;
       display: block;
       width: 80%;
@@ -97,6 +98,23 @@
       text-decoration: none;
       cursor: pointer;
     }
+    .nav-buttons {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 100%;
+      display: flex;
+      justify-content: space-between;
+      z-index: 1;
+    }
+    .nav-buttons button {
+      background: none;
+      border: none;
+      color: white;
+      font-size: 20px;
+      cursor: pointer;
+      padding: 10px;
+    }
   </style>
 </head>
 <body background="pattern.jpg"> <!-- Set the background pattern directly in the body tag -->
@@ -107,52 +125,25 @@
     <img src="goat.jpg" alt="Goat" class="goat-img">
     <p>Siamo una fattoria a conduzione familiare dedicata all'allevamento di capre sane e felici.</p>
     
-  
     <div class="gallery">
-      <img src="cheese1.jpeg" alt="Cheese 1" onclick="openModal('cheese1.jpeg')">
-      <img src="cheese2.jpeg" alt="Cheese 2" onclick="openModal('cheese2.jpeg')">
-      <img src="capra.jpg" alt="Cheese 3" onclick="openModal('capra.jpg')">
-      <img src="beco.jpg" alt="Cheese 3" onclick="openModal('beco.jpg')">
+      <img src="cheese1.jpeg" alt="Cheese 1" onclick="openModal('cheese1.jpeg', 0)">
+      <img src="cheese2.jpeg" alt="Cheese 2" onclick="openModal('cheese2.jpeg', 1)">
+      <img src="capra.jpg" alt="Cheese 3" onclick="openModal('capra.jpg', 2)">
+      <img src="beco.jpg" alt="Cheese 3" onclick="openModal('beco.jpg', 3)">
       <!-- Add more images as needed -->
     </div>
     
-    <!--
-
-<p>Check out our delicious cheeses:</p>
-    <div class="cheese-list">
-      <table>
-        <thead>
-          <tr>
-            <th>Cheese</th>
-            <th>Price</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td>Feta</td>
-            <td>$5.99/lb</td>
-          </tr>
-          <tr>
-            <td>Chèvre</td>
-            <td>$7.99/lb</td>
-          </tr>
-          <tr>
-            <td>Ricotta</td>
-            <td>$4.99/lb</td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
-    
-    -->
-    
-      <div class="location">
+    <div class="location">
       <p>Venite a trovarci:</p>
       <p>Frazione Prada di Sevignano 1<br>38047 Segonzano TN <br>Tel.: 3467496276 </p>
     </div> 
     
     <div id="myModal" class="modal">
       <span class="close" onclick="closeModal()">&times;</span>
+      <div class="nav-buttons">
+        <button onclick="prevImage()">Previous</button>
+        <button onclick="nextImage()">Next</button>
+      </div>
       <img class="modal-content" id="img01">
     </div>
   </main>
@@ -161,13 +152,28 @@
   </footer>
 
   <script>
-    function openModal(imageName) {
+    let currentImageIndex = 0;
+
+    function openModal(imageName, index) {
+      currentImageIndex = index;
       document.getElementById('myModal').style.display = 'block';
       document.getElementById('img01').src = imageName;
     }
 
     function closeModal() {
       document.getElementById('myModal').style.display = 'none';
+    }
+
+    function nextImage() {
+      currentImageIndex = (currentImageIndex + 1) % document.querySelectorAll('.gallery img').length;
+      const nextImageSrc = document.querySelectorAll('.gallery img')[currentImageIndex].src;
+      document.getElementById('img01').src = nextImageSrc;
+    }
+
+    function prevImage() {
+      currentImageIndex = (currentImageIndex - 1 + document.querySelectorAll('.gallery img').length) % document.querySelectorAll('.gallery img').length;
+      const prevImageSrc = document.querySelectorAll('.gallery img')[currentImageIndex].src;
+      document.getElementById('img01').src = prevImageSrc;
     }
   </script>
 </body>
